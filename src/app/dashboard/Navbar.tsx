@@ -1,11 +1,11 @@
-'use client'; 
+'use client';
 
 import { useState } from 'react';
 import Link from 'next/link';
 
 import { signOut } from "next-auth/react";
 
-export default function Navbar(da : any) {
+export default function Navbar(da: any) {
   const role = Number(da.da.user.role);
 
   const [isOpen, setIsOpen] = useState(false);
@@ -21,8 +21,11 @@ export default function Navbar(da : any) {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex space-x-8">
-            {role == 0 && 
+            {role == 0 &&
               <>
+                <Link href="/graph" className="text-gray-700 font-semibold hover:text-black">
+                  Grafik
+                </Link>
                 <Link href="/vote" className="text-gray-700 font-semibold hover:text-black">
                   Vote
                 </Link>
@@ -36,7 +39,7 @@ export default function Navbar(da : any) {
                   User
                 </Link>
               </>
-             }
+            }
 
             <button
               onClick={() => signOut({ callbackUrl: "/login" })}

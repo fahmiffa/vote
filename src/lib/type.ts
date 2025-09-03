@@ -15,6 +15,11 @@ export interface Session {
   };
 }
 
+export interface DataItem {
+  headName: string;
+  candidate: number;
+}
+
 export interface EventData {
   count: number;
   time: string;
