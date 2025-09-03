@@ -155,7 +155,7 @@ export default function Data() {
                                     <tr key={index} className="hover:bg-gray-100">
                                         <td className="py-2 px-4 border-b border-gray-300">{index + 1}</td>
                                         <td className="py-2 px-4 border-b border-gray-300">{user.name}</td>
-                                        <td className="py-2 px-4 border-b border-gray-300">{user.img ? <img src={user.img} alt={user.name} className="w-15 rounded-full" /> : 'No image'}</td>
+                                        <td className="py-2 px-4 border-b border-gray-300">{user.img ? <img src={user.img} alt={user.name} className="w-15 h-15 object-cover rounded" /> : 'No image'}</td>
                                         <td className="py-2 px-4 border-b border-gray-300 space-x-2">
                                             <button
                                                 onClick={() => handleEdit(user)}

@@ -15,6 +15,10 @@ export interface Session {
   };
 }
 
+export interface EventData {
+  count: number;
+  time: string;
+}
 export interface calon {
   id: number;
   name: string;

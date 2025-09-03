@@ -31,38 +31,79 @@ export async function PUT(
   const formData = await request.formData();
   const image = formData.get("image");
   const name = formData.get("name");
+  const calonr = formData.get('calon');
 
-  if (!image || !(image instanceof File)) {
-    return NextResponse.json({ success: false, message: "File tidak valid" }, { status: 400 });
-  }
 
   if (!name || typeof name !== "string") {
     return NextResponse.json({ success: false, message: "Nama tidak valid" }, { status: 400 });
   }
 
-  const bytes = await image.arrayBuffer();
-  const buffer = Buffer.from(bytes);
+  let fileUrl = null;
 
-  const fileName = `${Date.now()}-${image.name}`;
-  const uploadDir = path.join(process.cwd(), "public", "upload");
-  const filePath = path.join(uploadDir, fileName);
+  if (image && (image instanceof File)) {
+    const bytes = await image.arrayBuffer();
+    const buffer = Buffer.from(bytes);
 
-  try {
+    const fileName = `${Date.now()}-${image.name}`;
+    const uploadDir = path.join(process.cwd(), "public", "upload");
+    const filePath = path.join(uploadDir, fileName);
     await fs.mkdir(uploadDir, { recursive: true });
     await fs.writeFile(filePath, buffer);
-    const fileUrl = `/upload/${fileName}`;
+    fileUrl = `/upload/${fileName}`;
+  }
 
-    const updatedUser = await prisma.candidate.update({
+  let calon: number[] = [];
+  if (calonr) {
+    try {
+      calon = JSON.parse(calonr.toString());
+    } catch {
+      console.error("Gagal parse calon:", calonr);
+    }
+  }
+
+
+  try {
+
+    let res;
+
+    if (fileUrl) {
+      res = await prisma.candidate.update({
+        where: {
+          id: Number(id),
+        },
+        data: {
+          name,
+          img: fileUrl,
+        },
+      });
+
+    }
+    else {
+      res = await prisma.candidate.update({
+        where: {
+          id: Number(id),
+        },
+        data: {
+          name,
+        },
+      });
+    }
+
+    await prisma.vote.deleteMany({
       where: {
-        id: Number(id),
-      },
-      data: {
-        name,
-        img: fileUrl,
-      },
+        headId: res.id
+      }
     });
 
-    return NextResponse.json({ user: updatedUser }, { status: 200 });
+
+    for (let index = 0; index < calon.length; index++) {
+      await prisma.vote.create({
+        data: { candidateId: calon[index], headId: res.id }
+      });
+    }
+
+
+    return NextResponse.json({ user: res }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error: `Failed to update user ${error}` }, { status: 500 });
   }

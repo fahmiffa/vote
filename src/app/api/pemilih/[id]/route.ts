@@ -25,12 +25,11 @@ export async function PUT(
 ) {
   const { id } = await context.params;
   const body = await request.json();
-  const { name, kelas } = body;
 
   try {
     const updatedUser = await prisma.peserta.update({
       where: { id: Number(id) },
-      data: { name, kelas },
+      data: body,
     });
 
     return NextResponse.json({ user: updatedUser }, { status: 200 });

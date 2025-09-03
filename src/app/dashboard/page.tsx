@@ -1,15 +1,24 @@
 import withAuth from "@/lib/withAuth"
 import Navbar from "./Navbar";
+import Device from "./Device";
+import Choose from "./Choose";
 
 export default withAuth(async (session) => {
 
+  const role = Number(session.user.role)
   return (
     <>
-      <Navbar da={session}/>
-      <main className="flex flex-col items-center justify-center p-8 bg-gray-50 shadow-md rounded-2xl text-black my-10 mx-20">
-        <h1 className="text-3xl font-bold mb-4">WELCOME TO VOTE</h1>
-        <p className="mb-8">{session.user?.name}</p>
-      </main>
+      {role == 2 || role == 0 ? (
+        <>
+          <Navbar da={session} />
+          <main className="flex flex-col items-center justify-center p-8 bg-gray-50 shadow-md rounded-2xl text-black my-10 mx-20">
+            <Choose/>
+          </main>
+        </>
+      ) : (
+        <Device da={session} />
+      )}
+
     </>
   );
 })

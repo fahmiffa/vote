@@ -14,7 +14,7 @@ export default function Data() {
     const [search, setSearch] = useState("");
     const [input, setInput] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 3;
+    const itemsPerPage = 10;
 
     async function fetchData() {
         try {
@@ -29,7 +29,6 @@ export default function Data() {
             toast.error("Terjadi kesalahan saat fetch data");
         }
     }
-
 
     const formRef = useRef<HTMLDivElement>(null);
     const [email, setEmail] = useState("")
@@ -70,16 +69,14 @@ export default function Data() {
 
         let res;
         if (editingUserId === null) {
-            // Create user
             res = await fetch("/api/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password: "jalan", name, role: Number(role) }),
             });
         } else {
-            // Update user
             res = await fetch(`/api/register/${editingUserId}`, {
-                method: "PUT",  // atau PATCH, tergantung API
+                method: "PUT",  
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, name, role: Number(role) }),
             });
@@ -121,10 +118,27 @@ export default function Data() {
         setInput(false);
     }
 
+    function trans(par: number) {
+        if (par == 0) {
+            return "Admin"
+        }
+
+        if (par == 2) {
+            return "Operator"
+        }
+
+        if (par == 11) {
+            return "Perangkat Putra"
+        }
+
+        if (par == 22) {
+            return "Perangkat Putri"
+        }
+    }
+
     return (
         <div className="flex flex-col w-full">
             <Toaster position="top-right" />
-            {/* Toggle Button */}
             <div className="flex justify-between items-center mb-4">
                 <div className="text-xl font-bold mb-4">{input ? 'Data User' : 'Tambah User'}</div>
                 <button
@@ -137,7 +151,6 @@ export default function Data() {
 
             {input ? (
                 <>
-                    {/* Search */}
                     <div className="flex justify-between items-center mb-4">
                         <input
                             type="text"
@@ -169,7 +182,7 @@ export default function Data() {
                                         <td className="py-2 px-4 border-b border-gray-300">{index + 1}</td>
                                         <td className="py-2 px-4 border-b border-gray-300">{user.name}</td>
                                         <td className="py-2 px-4 border-b border-gray-300">{user.email}</td>
-                                        <td className="py-2 px-4 border-b border-gray-300">{user.role == 0 ? 'Admin' : 'User'}</td>
+                                        <td className="py-2 px-4 border-b border-gray-300">{trans(user.role)}</td>
                                         <td className="py-2 px-4 border-b border-gray-300 space-x-2">
                                             <button
                                                 onClick={() => handleEdit(user)}
@@ -254,7 +267,8 @@ export default function Data() {
                             >
                                 <option value="">Pilih Role</option>
                                 <option value="0">Admin</option>
-                                <option value="1">Perangkat</option>
+                                <option value="11">Perangkat Putra</option>
+                                <option value="22">Perangkat Putri</option>
                                 <option value="2">Operator</option>
                             </select>
 

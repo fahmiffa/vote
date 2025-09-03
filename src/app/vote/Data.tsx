@@ -186,7 +186,7 @@ export default function Data() {
                                     <th className="py-2 px-4 border-b text-left">No</th>
                                     <th className="py-2 px-4 border-b text-left">Name</th>
                                     <th className="py-2 px-4 border-b text-left">Gambar</th>
-                                    <th className="py-2 px-4 border-b text-left">Calon</th>
+                                    <th className="py-2 px-4 border-b text-left">Kandidat</th>
                                     <th className="py-2 px-4 border-b text-left">Status</th>
                                     <th className="py-2 px-4 border-b text-left">Actions</th>
                                 </tr>

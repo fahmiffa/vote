@@ -16,6 +16,13 @@ model User {
   createdAt DateTime @default(now())
 }
 
+model Device {
+  id         Int      @id @default(autoincrement())
+  primary    Int
+  secondary  Int
+  createdAt DateTime @default(now())
+}
+
 model Peserta {
   id        Int      @id @default(autoincrement())
   name      String
@@ -30,6 +37,7 @@ model Candidate {
   img       String
   createdAt DateTime @default(now())
   votes     Vote[]   // Relationship to Vote
+  res       Res[] 
 }
 
 model Head {
@@ -38,7 +46,8 @@ model Head {
   img       String
   status    Int
   createdAt DateTime @default(now())
-  votes     Vote[]   @relation("HeadVotes") // named relation
+  votes     Vote[] @relation("HeadVotes") // named relation
+  res       Res[]  @relation("HeadRes") // inverse relation ke Res
 }
 
 model Vote {
@@ -51,4 +60,16 @@ model Vote {
 
   createdAt  DateTime @default(now())
 }
+
+model Res {
+  id        Int       @id @default(autoincrement())
+  candidateId Int
+  candidate  Candidate @relation(fields: [candidateId], references: [id])
+
+  headId     Int
+  head       Head     @relation("HeadRes", fields: [headId], references: [id])
+
+  createdAt  DateTime @default(now())
+}
+
 
