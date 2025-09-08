@@ -179,14 +179,14 @@ export default function Device(da: any) {
                                                 }`}
                                         >
                                             <div className="flex flex-col items-center justify-center">
-                                                <div className="text-center text-lg font-semibold mb-1 tracking-normal leading-normal">
-                                                    {items.candidate.name}
+                                                <div className="relative">
+                                                    <div className="absolute bottom-0 bg-black w-full text-white h-14 flex items-center justify-center leading-tight"> {items.candidate.name}</div>
+                                                    <img
+                                                        src={items.candidate.img}
+                                                        alt={items.candidate.name}
+                                                        className="w-48 h-48 object-cover rounded-2xl"
+                                                    />
                                                 </div>
-                                                <img
-                                                    src={items.candidate.img}
-                                                    alt={items.candidate.name}
-                                                    className="w-28 h-48 object-contain rounded-2xl"
-                                                />
                                             </div>
                                         </button>
                                     ))
@@ -204,14 +204,14 @@ export default function Device(da: any) {
                                                 }`}
                                         >
                                             <div className="flex flex-col items-center justify-center">
-                                                <div className="text-center text-lg font-semibold mb-1">
-                                                    {items.candidate.name}
+                                                <div className="relative">
+                                                    <div className="absolute bottom-0 bg-black w-full text-white h-14 flex items-center justify-center leading-tight"> {items.candidate.name}</div>
+                                                    <img
+                                                        src={items.candidate.img}
+                                                        alt={items.candidate.name}
+                                                        className="w-48 h-48 object-cover rounded-2xl"
+                                                    />
                                                 </div>
-                                                <img
-                                                    src={items.candidate.img}
-                                                    alt={items.candidate.name}
-                                                    className="w-28 h-48 object-cover rrounded-2xl"
-                                                />
                                             </div>
                                         </button>
                                     ))

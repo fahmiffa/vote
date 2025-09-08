@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev --turbopack -p 80",
     "build": "next build --turbopack",
+    "export": "next build",
     "start": "next start -p 80",
     "lint": "eslint"
   },
