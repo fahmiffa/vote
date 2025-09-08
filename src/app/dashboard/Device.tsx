@@ -56,8 +56,14 @@ export default function Device(da: any) {
                 const msg = parseMessage(data.message);
 
                 if (msg.type === 1 && role == msg.device) {
-                    SetFirst(1);
-                    SetSecond(1);
+
+                    if (first == 0) {
+                        SetFirst(1);
+                    }
+
+                    if (second == 0) {
+                        SetSecond(1);
+                    }
                 }
 
             }
@@ -148,79 +154,81 @@ export default function Device(da: any) {
     }
 
     return (
-        <div className="flex-row relative">
-            <div className="text-xs absolute top-2 left-2">{id}</div>
-            <div className="flex items-center justify-center gap-3 min-h-screen">
-                <Toaster position="top-center" />
-                {val.map((item, index) => (
-                    <div key={index} className="bg-gray-50 shadow-md rounded-2xl text-black my-5 mx-20 w-1/2 flex-row items-center justify-center">
-                        <div className="flex items-center justify-center gap-3 p-2">
-                            <div className="text-2xl font-bold text-center">PEMILIHAN {item.name}</div>
-                            <img src={item.img} alt={item.name} className="w-8" />
-                        </div>
-                        <div className={`flex items-center justify-around p-5 ${item.name !== 'OSIS' ? 'bg-[#ACE1AF]' : 'bg-[#6CB4EE]'}`}>
+        <div className="relative">
+            <div className="text-xs absolute -top-5 left-2">{id}</div>
+            <div className="flex-row">
+                <div className="flex-col items-center justify-center min-h-screen mx-auto">
+                    <Toaster position="top-center" />
+                    {val.map((item, index) => (
+                        <div key={index} className="bg-gray-50 shadow-md rounded-2xl text-black my-5 mx-20   flex-row items-center justify-center">
+                            <div className="flex items-center justify-center gap-3 p-1">
+                                <div className="text-2xl font-bold text-center">PEMILIHAN {item.name}</div>
+                                <img src={item.img} alt={item.name} className="w-8" />
+                            </div>
+                            <div className={`flex items-end justify-center gap-7 p-5 ${item.name !== 'OSIS' ? 'bg-[#ACE1AF]' : 'bg-[#6CB4EE]'}`}>
 
-                            {index == 0 && (
-                                item.votes.map((items, indexs) => (
-                                    <button
-                                        key={indexs}
-                                        disabled={first == 0}
-                                        onClick={() => handleCome(item.id, items.candidate.id, index)}
-                                        className={`p-2 rounded-2xl hover:bg-amber-300 ${first == 0
-                                            ? 'cursor-not-allowed opacity-50'
-                                            : 'cursor-pointer'
-                                            }`}
-                                    >
-                                        <div className="flex flex-col items-center justify-center">
-                                            <div className="text-center text-xl font-semibold mb-1">
-                                                {items.candidate.name}
+                                {index == 0 && (
+                                    item.votes.map((items, indexs) => (
+                                        <button
+                                            key={indexs}
+                                            disabled={first == 0}
+                                            onClick={() => handleCome(item.id, items.candidate.id, index)}
+                                            className={`p-2 rounded-2xl hover:bg-amber-300 ${first == 0
+                                                ? 'cursor-not-allowed opacity-50'
+                                                : 'cursor-pointer'
+                                                }`}
+                                        >
+                                            <div className="flex flex-col items-center justify-center">
+                                                <div className="text-center text-lg font-semibold mb-1 tracking-normal leading-normal">
+                                                    {items.candidate.name}
+                                                </div>
+                                                <img
+                                                    src={items.candidate.img}
+                                                    alt={items.candidate.name}
+                                                    className="w-28 h-48 object-contain rounded-2xl"
+                                                />
                                             </div>
-                                            <img
-                                                src={items.candidate.img}
-                                                alt={items.candidate.name}
-                                                className="w-28 h-28 object-cover rounded-2xl"
-                                            />
-                                        </div>
-                                    </button>
-                                ))
-                            )}
+                                        </button>
+                                    ))
+                                )}
 
-                            {index == 1 && (
-                                item.votes.map((items, indexs) => (
-                                    <button
-                                        key={indexs}
-                                        disabled={second == 0}
-                                        onClick={() => handleCome(item.id, items.candidate.id, index)}
-                                        className={`p-2 rounded-2xl hover:bg-amber-300 ${second == 0
-                                            ? 'cursor-not-allowed opacity-50'
-                                            : 'cursor-pointer'
-                                            }`}
-                                    >
-                                        <div className="flex flex-col items-center justify-center">
-                                            <div className="text-center text-xl font-semibold mb-1">
-                                                {items.candidate.name}
+                                {index == 1 && (
+                                    item.votes.map((items, indexs) => (
+                                        <button
+                                            key={indexs}
+                                            disabled={second == 0}
+                                            onClick={() => handleCome(item.id, items.candidate.id, index)}
+                                            className={`p-2 rounded-2xl hover:bg-amber-300 ${second == 0
+                                                ? 'cursor-not-allowed opacity-50'
+                                                : 'cursor-pointer'
+                                                }`}
+                                        >
+                                            <div className="flex flex-col items-center justify-center">
+                                                <div className="text-center text-lg font-semibold mb-1">
+                                                    {items.candidate.name}
+                                                </div>
+                                                <img
+                                                    src={items.candidate.img}
+                                                    alt={items.candidate.name}
+                                                    className="w-28 h-48 object-cover rrounded-2xl"
+                                                />
                                             </div>
-                                            <img
-                                                src={items.candidate.img}
-                                                alt={items.candidate.name}
-                                                className="w-28 h-28 object-cover rounded-2xl"
-                                            />
-                                        </div>
-                                    </button>
-                                ))
-                            )}
+                                        </button>
+                                    ))
+                                )}
 
 
+                            </div>
                         </div>
-                    </div>
-                ))}
-                <button
-                    onClick={() => signOut({ callbackUrl: "/login" })}
-                    className="fixed bottom-6 right-6 bg-gray-800 text-white p-3 rounded-full shadow-lg hover:bg-gray-900 transition cursor-pointer"
-                >
-                    <LogOut />
-                </button>
+                    ))}
+                    <button
+                        onClick={() => signOut({ callbackUrl: "/login" })}
+                        className="fixed bottom-6 right-6 bg-gray-800 text-white p-3 rounded-full shadow-lg hover:bg-gray-900 transition cursor-pointer"
+                    >
+                        <LogOut />
+                    </button>
 
+                </div>
             </div>
         </div>
     );

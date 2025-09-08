@@ -7,23 +7,33 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model candidate {
   id        Int      @id @default(autoincrement())
-  name      String?
-  email     String   @unique
-  password  String
-  role      Int
+  name      String
+  img       String
+  createdAt DateTime @default(now())
+  res       res[]
+  vote      vote[]
+}
+
+model device {
+  id        Int      @id @default(autoincrement())
+  primary   Int
+  secondary Int
   createdAt DateTime @default(now())
 }
 
-model Device {
-  id         Int      @id @default(autoincrement())
-  primary    Int
-  secondary  Int
+model head {
+  id        Int      @id @default(autoincrement())
+  name      String
+  img       String
+  status    Int
   createdAt DateTime @default(now())
+  res       res[]
+  vote      vote[]
 }
 
-model Peserta {
+model peserta {
   id        Int      @id @default(autoincrement())
   name      String
   kelas     String
@@ -31,45 +41,35 @@ model Peserta {
   createdAt DateTime @default(now())
 }
 
-model Candidate {
-  id        Int      @id @default(autoincrement())
-  name      String
-  img       String
-  createdAt DateTime @default(now())
-  votes     Vote[]   // Relationship to Vote
-  res       Res[] 
-}
-
-model Head {
-  id        Int      @id @default(autoincrement())
-  name      String
-  img       String
-  status    Int
-  createdAt DateTime @default(now())
-  votes     Vote[] @relation("HeadVotes") // named relation
-  res       Res[]  @relation("HeadRes") // inverse relation ke Res
-}
-
-model Vote {
-  id        Int       @id @default(autoincrement())
+model res {
+  id          Int       @id @default(autoincrement())
   candidateId Int
-  candidate  Candidate @relation(fields: [candidateId], references: [id])
+  headId      Int
+  createdAt   DateTime  @default(now())
+  candidate   candidate @relation(fields: [candidateId], references: [id], map: "Res_candidateId_fkey")
+  head        head      @relation(fields: [headId], references: [id], map: "Res_headId_fkey")
 
-  headId     Int
-  head       Head     @relation("HeadVotes", fields: [headId], references: [id])
-
-  createdAt  DateTime @default(now())
+  @@index([candidateId], map: "Res_candidateId_fkey")
+  @@index([headId], map: "Res_headId_fkey")
 }
 
-model Res {
-  id        Int       @id @default(autoincrement())
+model user {
+  id        Int      @id @default(autoincrement())
+  name      String?
+  email     String   @unique(map: "User_email_key")
+  password  String
+  role      Int
+  createdAt DateTime @default(now())
+}
+
+model vote {
+  id          Int       @id @default(autoincrement())
   candidateId Int
-  candidate  Candidate @relation(fields: [candidateId], references: [id])
+  headId      Int
+  createdAt   DateTime  @default(now())
+  candidate   candidate @relation(fields: [candidateId], references: [id], map: "Vote_candidateId_fkey")
+  head        head      @relation(fields: [headId], references: [id], map: "Vote_headId_fkey")
 
-  headId     Int
-  head       Head     @relation("HeadRes", fields: [headId], references: [id])
-
-  createdAt  DateTime @default(now())
+  @@index([candidateId], map: "Vote_candidateId_fkey")
+  @@index([headId], map: "Vote_headId_fkey")
 }
-
-

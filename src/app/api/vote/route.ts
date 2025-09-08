@@ -7,7 +7,7 @@ export async function GET() {
   try {
     const users = await prisma.head.findMany({
       include: {
-        votes: {
+        vote: {
           include: {
             candidate: true,
           },
@@ -19,7 +19,7 @@ export async function GET() {
       name: item.name ?? "",
       img: item.img,
       status: item.status,
-      votes: item.votes.map((vote) => ({
+      votes: item.vote.map((vote) => ({
         id: vote.id,
         candidate: {
           id: vote.candidate.id,
